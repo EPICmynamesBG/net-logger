@@ -5,6 +5,10 @@ const winston = require('winston');
 const fs = require('fs');
 const os = require('os');
 
+const {
+  listNetworkInterfaces
+} = require('./src/interface');
+
 const form = document.getElementById('log-form');
 let loggingInProgress = false;
 toggleLoggingInProgress(false);
@@ -197,3 +201,22 @@ function stopLogging() {
   }
   toggleLoggingInProgress(false);
 }
+
+function generateInterfaceOptions() {
+  const interfaces = listNetworkInterfaces(osPlatform);
+  const selectEl = document.getElementById('network-interfaces');
+  selectEl.innerHTML = undefined;
+  interfaces.forEach((interface) => {
+    const opt = document.createElement('option');
+    opt.appendChild(document.createTextNode(interface));
+    opt.value = interface;
+    selectEl.appendChild(opt);
+  });
+}
+
+function onInit() {
+  generateInterfaceOptions();
+}
+
+
+onInit();

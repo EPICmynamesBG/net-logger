@@ -28,6 +28,13 @@
             <label for="logging-filename">Filename</label>
             <input type="text" id="logging-filename" name="logging-filename" value="uptime.log" required />
           </section>
+          <section class="form-group">
+            <label for="logging-format">Logging Format</label>
+            <select name="logging-format" id="logging-format" required>
+              <option value="txt">PlainText</option>
+              <option value="json">JSON</option>
+            </select>
+          </section>
         </fieldset>
         <fieldset>
           <legend>Servers</legend>
@@ -51,10 +58,8 @@
             <input type="number" id="logging-interval" name="logging-interval" value="3" required/>
           </section>
           <section class="form-group">
-            <label for="logging-format">Logging Format</label>
-            <select name="logging-format" id="logging-format" required>
-              <option value="txt">PlainText</option>
-              <option value="json">JSON</option>
+            <label for="network-interfaces">Network Interface</label>
+            <select name="network-interfaces" id="network-interfaces" required>
             </select>
           </section>
         </fieldset>
