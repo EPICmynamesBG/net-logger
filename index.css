@@ -1,0 +1,29 @@
+
+
+div#log-in-progress {
+  display: none;
+}
+
+.hide {
+  display: none;
+  visibility: hidden;
+}
+
+.show {
+  display: block;
+  visibility: visible;
+}
+
+input#logging-directory {
+  display: block;
+  width: 90%;
+}
+
+form fieldset {
+  margin: 10px auto;
+}
+
+form *.invalid {
+  border-color: red;
+  background: #f0cbc9;
+}

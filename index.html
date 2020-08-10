@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Net-Logger</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" lang="en" />
+    <link rel="stylesheet" href="./node_modules/papercss/dist/paper.min.css" />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body class="container">
+    <header>
+      <h1>Network Uptime Logger</h1>
+    </header>
+    <article class="sm-12 md-8 col paper">
+      <form class="show" id="log-form" target="_self" novalidate>
+        <fieldset>
+          <legend>Logging</legend>
+          <section class="form-group">
+            <label for="logging-directory">Log Directory</label>
+            <input type="text" readonly id="logging-directory" name="logging-directory" required />
+            <input type="button" value="Select Directory" id="logging-directory-btn" name="logging-directory-btn" onclick="selectLoggingDir()" required />
+          </section>
+          <section class="form-group">
+            <label for="logging-filename">Filename</label>
+            <input type="text" id="logging-filename" name="logging-filename" value="uptime.log" required />
+          </section>
+        </fieldset>
+        <fieldset>
+          <legend>Servers</legend>
+          <section class="form-group">
+            <label for="server-1">Server 1 (default: Google)</label>
+            <input type="text" id="server-1" name="server-1" value="8.8.8.8" required/>
+          </section>
+          <section class="form-group">
+            <label for="server-2">Server 2 (default: OpenDNS)</label>
+            <input type="text" id="server-2" name="server-2" value="208.67.222.222" required/>
+          </section>
+          <section class="form-group">
+            <label for="server-3">Server 3 (default: Cloudflare)</label>
+            <input type="text" id="server-3" name="server-3" value="1.1.1.1" required/>
+          </section>
+        </fieldset>
+        <fieldset>
+          <legend>Options</legend>
+          <section class="form-group">
+            <label for="logging-interval">Check Interval (seconds)</label>
+            <input type="number" id="logging-interval" name="logging-interval" value="3" required/>
+          </section>
+          <section class="form-group">
+            <label for="logging-format">Logging Format</label>
+            <select name="logging-format" id="logging-format" required>
+              <option value="txt">PlainText</option>
+              <option value="json">JSON</option>
+            </select>
+          </section>
+        </fieldset>
+        <button class="btn-block btn-primary-outline" type="submit">
+          Begin Logging
+        </button>
+      </form>
+      <div class="hide" id="logging-in-progress">
+        <h4>Server 1</h4>
+        <pre id="server-1-tail">Waiting for initial check...</pre>
+        <h4>Server 2</h4>
+        <pre id="server-2-tail">Waiting for initial check...</pre>
+        <h4>Server 3</h4>
+        <pre id="server-3-tail">Waiting for initial check...</pre>
+        <br />
+        <button class="btn-block btn-danger-outline" type="button" onclick="stopLogging()">
+          Stop Logging
+        </button>
+      </div>
+    </article>
+    <footer class="sm-12 md-4 col sidebar paper">
+      <div class="row flex-center">
+        <p>
+          Made with 💛 by <a href="https://www.github.com/EPICmynamesbg" target="_blank">EPICmynamesbg</a>
+        </p>
+      </div>
+    </footer>
+    <script src="./rendered.js"></script>
+  </body>
+</html>

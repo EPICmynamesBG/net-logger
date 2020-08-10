@@ -1,0 +1,29 @@
+{
+  "name": "net-logger",
+  "version": "1.0.0",
+  "description": "Network ping/uptime logger",
+  "main": "main.js",
+  "dependencies": {
+    "papercss": "^1.7.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "electron": "^9.1.2",
+    "electron-installer-windows": "^3.0.0",
+    "electron-packager": "^15.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --all --out=\"./dist\" --prune --overwrite --icon=icons/icon --ignore=./icons --asar",
+    "build:win": "electron-packager . --platform=win32 --arch=x64 --out=\"./dist\" --prune --overwrite --icon=icons/icon --ignore=./icons --asar",
+    "setup": "electron-installer-windows --src dist/net-logger-win32-x64/ --dest dist/installers/",
+    "develop": "NODE_ENV=\"development\" electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=12.8.3",
+    "npm": ">=6.14.6"
+  },
+  "author": "Brandon Groff <mynamesbg@gmail.com> (http://github.com/EPICmynamesbg)",
+  "license": "ISC"
+}
