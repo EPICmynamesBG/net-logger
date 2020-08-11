@@ -1,4 +1,41 @@
+/* PaperCSS Overrides for explicitness */
+.tabs input {
+  display: inherit;
+}
 
+.tabs label {
+  color: inherit;
+  display: inherit;
+  font-weight: inherit;
+  margin: inherit;
+  padding: inherit;
+  text-align: inherit;
+}
+
+.tabs label:hover {
+  color: inherit;
+  cursor: inherit;
+}
+
+.tabs > input[name="tabs"] {
+  display: none;
+}
+
+.tabs > label.tab-label {
+  color: #c1c0bd;
+  display: inline-block;
+  font-weight: 600;
+  margin: 0 0 -1px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.tabs > label.tab-label:hover {
+  color: #868e96;
+  cursor: pointer;
+}
+
+/* Custom */
 
 div#log-in-progress {
   display: none;
@@ -26,4 +63,8 @@ form fieldset {
 form *.invalid {
   border-color: red;
   background: #f0cbc9;
+}
+
+.title sub {
+  line-height: normal;
 }

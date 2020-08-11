@@ -1,13 +1,12 @@
-
-const { spawn } = require('child_process');
-const { dialog } = require('electron').remote;
-const winston = require('winston');
-const fs = require('fs');
 const os = require('os');
+const { dialog } = require('electron').remote;
 
+const { getLogger } = require('./src/logger');
 const {
   listNetworkInterfaces
 } = require('./src/interface');
+const ping = require('./src/ping');
+
 
 const form = document.getElementById('log-form');
 let loggingInProgress = false;
@@ -28,14 +27,6 @@ const processes = {
   'server-2': undefined,
   'server-3': undefined
 };
-
-const formats = {
-  txt: winston.format.printf(info => `${new Date().toISOString()} [${info.ip}] ${info.message}`.trim()),
-  json: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.prettyPrint()
-  )
-}
 
 window.onbeforeunload = function(e) {
   if (loggingInProgress) {
@@ -91,14 +82,11 @@ function liveLogRender(serverKey, txt, timestamp) {
  * @param {number} logInterval ping interval in seconds
  * @returns {ChildProcess}
  */
-function wrapSpawn(serverKey, serverIp, logger, logInterval) {
-  const args = [serverIp];
-  if (osPlatform === 'win32') {
-    args.push('-t');
-  } else {
-    args.push('-i', logInterval);
-  }
-  const proc = spawn('ping', args, { shell: true });
+function wrapSpawn(serverKey, serverIp, logger, logInterval, interface) {
+  const proc = ping(serverIp, {
+    interval: logInterval,
+    interface
+  });
   proc.stdout.on('data', (data) => {
     liveLogRender(serverKey, data.toString(), (new Date()).toISOString());
     logger.verbose(data.toString(), { ip: serverIp });
@@ -111,24 +99,6 @@ function wrapSpawn(serverKey, serverIp, logger, logInterval) {
     logger.info(`Logging Stopped`, { ip: serverIp });
   });
   return proc;
-}
-
-
-/**
- * @param {string} filename
- * @param {string} filePath
- * @returns {winston.Logger}
- */
-function getLogger(filename, filePath, format = 'json') {
-  const useFormatter = formats[format];
-  logger = winston.createLogger({
-    level: 'silly',
-    format: useFormatter,
-    transports: [
-      new winston.transports.File({ filename: `${filePath}/${filename}` }),
-    ]
-  });
-  return logger;
 }
 
 function validateFormElement(el) {
