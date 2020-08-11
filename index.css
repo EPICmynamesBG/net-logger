@@ -51,7 +51,7 @@ div#log-in-progress {
   visibility: visible;
 }
 
-input#logging-directory {
+input[name="logging-directory"] {
   display: block;
   width: 90%;
 }

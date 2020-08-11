@@ -5,13 +5,13 @@
   "main": "main.js",
   "dependencies": {
     "papercss": "^1.7.0",
-    "speedtest-net": "^2.1.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {
     "electron": "^9.1.2",
     "electron-installer-windows": "^3.0.0",
-    "electron-packager": "^15.0.0"
+    "electron-packager": "^15.0.0",
+    "electron-rebuild": "^1.11.0"
   },
   "scripts": {
     "start": "electron .",
@@ -19,7 +19,8 @@
     "build:win": "electron-packager . --platform=win32 --arch=x64 --out=\"./dist\" --prune --overwrite --icon=icons/icon --ignore=./icons --asar",
     "setup": "electron-installer-windows --src dist/net-logger-win32-x64/ --dest dist/installers/",
     "develop": "NODE_ENV=\"development\" electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rebuild": "electron-rebuild"
   },
   "engines": {
     "node": ">=12.8.3",

@@ -27,21 +27,21 @@
             <h2 class="margin-top-small margin-bottom-large">Uptime Logger</h2>
             <sub class="margin-top-large margin-left-small margin-bottom-small">powered by <a href="https://en.wikipedia.org/wiki/Ping_(networking_utility)" target="_blank">system ping</a></sub>
           </div>
-          <form class="show" id="log-form" target="_self" novalidate>
+          <form class="show" id="ping-form" target="_self" novalidate>
             <fieldset>
               <legend>Logging</legend>
               <section class="form-group">
-                <label for="logging-directory">Log Directory</label>
-                <input type="text" readonly id="logging-directory" name="logging-directory" required />
-                <input type="button" value="Select Directory" id="logging-directory-btn" name="logging-directory-btn" onclick="selectLoggingDir()" required />
+                <label for="ping-logging-directory">Log Directory</label>
+                <input type="text" readonly id="ping-logging-directory" name="logging-directory" required />
+                <input type="button" value="Select Directory" id="ping-logging-directory-btn" name="ping-logging-directory-btn" onclick="selectLoggingDir('ping-logging-directory')" required />
               </section>
               <section class="form-group">
-                <label for="logging-filename">Filename</label>
-                <input type="text" id="logging-filename" name="logging-filename" value="uptime.log" required />
+                <label for="ping-logging-filename">Filename</label>
+                <input type="text" id="ping-logging-filename" name="ping-logging-filename" value="uptime.log" required />
               </section>
               <section class="form-group">
-                <label for="logging-format">Logging Format</label>
-                <select name="logging-format" id="logging-format" required>
+                <label for="ping-logging-format">Logging Format</label>
+                <select name="ping-logging-format" id="ping-logging-format" required>
                   <option value="txt">PlainText</option>
                   <option value="json">JSON</option>
                 </select>
@@ -65,8 +65,8 @@
             <fieldset>
               <legend>Options</legend>
               <section class="form-group">
-                <label for="logging-interval">Check Interval (seconds)</label>
-                <input type="number" id="logging-interval" name="logging-interval" value="3" required/>
+                <label for="ping-logging-interval">Check Interval (seconds)</label>
+                <input type="number" id="ping-logging-interval" name="ping-logging-interval" value="3" required/>
               </section>
               <section class="form-group">
                 <label for="network-interfaces">Network Interface</label>
@@ -78,7 +78,7 @@
               Begin Uptime Logging
             </button>
           </form>
-          <div class="hide" id="logging-in-progress">
+          <div class="hide" id="ping-logging-in-progress">
             <h4>Server 1</h4>
             <pre id="server-1-tail">Waiting for initial check...</pre>
             <h4>Server 2</h4>
@@ -86,7 +86,7 @@
             <h4>Server 3</h4>
             <pre id="server-3-tail">Waiting for initial check...</pre>
             <br />
-            <button class="btn-block btn-danger-outline" type="button" onclick="stopLogging()">
+            <button class="btn-block btn-danger-outline" type="button" onclick="stopPingLogging()">
               Stop Logging
             </button>
           </div>
@@ -100,17 +100,17 @@
             <fieldset>
               <legend>Logging</legend>
               <section class="form-group">
-                <label for="logging-directory">Log Directory</label>
-                <input type="text" readonly id="logging-directory" name="logging-directory" required />
-                <input type="button" value="Select Directory" id="logging-directory-btn" name="logging-directory-btn" onclick="selectLoggingDir()" required />
+                <label for="speed-logging-directory">Log Directory</label>
+                <input type="text" readonly id="speed-logging-directory" name="logging-directory" required />
+                <input type="button" value="Select Directory" id="speed-logging-directory-btn" name="speed-logging-directory-btn" onclick="selectLoggingDir('speed-logging-directory')" required />
               </section>
               <section class="form-group">
-                <label for="logging-filename">Filename</label>
-                <input type="text" id="logging-filename" name="logging-filename" value="speed.log" required />
+                <label for="speed-logging-filename">Filename</label>
+                <input type="text" id="speed-logging-filename" name="speed-logging-filename" value="speed.log" required />
               </section>
               <section class="form-group">
-                <label for="logging-format">Logging Format</label>
-                <select name="logging-format" id="logging-format" required>
+                <label for="speed-logging-format">Logging Format</label>
+                <select name="speed-logging-format" id="speed-logging-format" required>
                   <option value="txt">PlainText</option>
                   <option value="json">JSON</option>
                 </select>
@@ -119,14 +119,12 @@
             <fieldset>
               <legend>Options</legend>
               <section class="form-group">
-                <label for="logging-interval">Check Interval (minutes)</label>
-                <input type="number" id="logging-interval" name="logging-interval" value="5" required/>
+                <label for="speed-logging-interval">Check Interval (minutes)</label>
+                <input type="number" id="speed-logging-interval" name="speed-logging-interval" value="5" required/>
               </section>
             </fieldset>
             <button class="btn-block btn-primary-outline" type="submit">
               Begin SpeedTesting
-
-
             </button>
           </form>
           <div class="hide" id="speedtest-in-progress">
@@ -137,7 +135,7 @@
             <h4>Download</h4>
             <pre id="speedtest-upload-tail">In Progress...</pre>
             <br />
-            <button class="btn-block btn-danger-outline" type="button" onclick="stopLogging()">
+            <button class="btn-block btn-danger-outline" type="button" onclick="stopSpeedLogging()">
               Stop Logging
             </button>
           </div>
