@@ -30,7 +30,13 @@ And thus, a simple software engineer set out to solve an already solved problem 
 
 ## Development
 
-This application is powered by [Electron](https://www.electronjs.org)
+This application is powered by [Electron](https://www.electronjs.org).
+
+## Pre-Requisites
+- [nodejs >=12.8.3](https://nodejs.org)
+- [npmjs >=6.14.6](https://www.npmjs.com)
+- clone repo
+- run `npm install`
 
 ### How to run
 `npm start`
