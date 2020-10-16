@@ -5,6 +5,15 @@ const winston = require('winston');
 const fs = require('fs');
 const os = require('os');
 
+const alarmAudio = new Audio('./alarm.mp3');
+alarmAudio.loop = true;
+
+const LiveDownDetector = require('./LiveDownDetector');
+
+Notification.requestPermission();
+
+let downDetector;
+
 const form = document.getElementById('log-form');
 let loggingInProgress = false;
 toggleLoggingInProgress(false);
@@ -57,6 +66,22 @@ window.onbeforeunload = function(e) {
   return;
 }
 
+function getDowntimeAlertingOptions() {
+  return {
+    alarm: document.getElementById('alarm').checked,
+    notifications: document.getElementById('notifications').checked
+  };
+}
+
+function alarmTest(e) {
+  e.disabled = true;
+  alarmAudio.play();
+  setTimeout(() => {
+    alarmAudio.pause();
+    e.disabled = false;
+  }, 3000);
+}
+
 function toggleLoggingInProgress(setValue) {
   loggingInProgress = setValue;
 
@@ -80,6 +105,16 @@ function liveLogRender(serverKey, txt, timestamp) {
   document.getElementById(key).textContent = `[${timestamp}]\n${txt}`;
 }
 
+function renderLastDowntime(event = {}) {
+  const key = `last-downtime-display`;
+  const secondsDiff = Math.floor(event.duration / 1000);
+  document.getElementById(key).textContent = `
+    ${event.start.toLocaleTimeString()} - ${event.start.toLocaleTimeString()}
+
+    ${secondsDiff} second${secondsDiff === 1 ? 's' : ''}
+  `;
+}
+
 /**
  * @param {string} serverKey server key identifier ie: server-1
  * @param {string} serverIp
@@ -96,11 +131,23 @@ function wrapSpawn(serverKey, serverIp, logger, logInterval) {
   }
   const proc = spawn('ping', args, { shell: true });
   proc.stdout.on('data', (data) => {
-    liveLogRender(serverKey, data.toString(), (new Date()).toISOString());
+    const ts = new Date();
+    downDetector.handle({
+      ip: serverIp,
+      message: data.toString(),
+      timestamp: ts
+    });
+    liveLogRender(serverKey, data.toString(), ts.toISOString());
     logger.verbose(data.toString(), { ip: serverIp });
   });
   proc.stderr.on('data', (data) => {
-    liveLogRender(serverKey, data.toString(), (new Date()).toISOString());
+    const ts = new Date();
+    downDetector.handle({
+      ip: serverIp,
+      message: data.toString(),
+      timestamp: ts
+    });
+    liveLogRender(serverKey, data.toString(), ts.toISOString());
     logger.error(data.toString(), { ip: serverIp });
   });
   proc.on('close', () => {
@@ -141,6 +188,28 @@ function validateFormElement(el) {
   return true;
 }
 
+function onNetworkDown(timestamp) {
+  const opts = getDowntimeAlertingOptions();
+  if (opts.notifications) {
+    new Notification('Network Down', {
+      body: `Network is down as of ${timestamp.toLocaleTimeString()}`
+    });
+  }
+  if (opts.alarm) {
+    alarmAudio.play();
+  }
+}
+
+function onNetworkBackUp(recordedEvent = {}) {
+  const opts = getDowntimeAlertingOptions();
+  alarmAudio.pause();
+  renderLastDowntime(recordedEvent);
+  if (opts.notifications) {
+    new Notification('Network Up', {
+      body: `Network is back up as of ${recordedEvent.end.toLocaleTimeString()}`
+    });
+  }
+}
 
 function startLogging(e) {
   e.preventDefault();
@@ -164,6 +233,14 @@ function startLogging(e) {
     logDirEl.value,
     document.getElementById('logging-format').value
   );
+
+  const ips = serverElements.map((serverInput) => {
+    console.log(serverInput);
+    const serverIp = serverInput.value;
+    return serverIp;
+  });
+
+  downDetector = new LiveDownDetector(ips, onNetworkDown, onNetworkBackUp);
 
   for (const [key, existingProcess] of Object.entries(processes)) {
     const serverIp = document.getElementById(key).value;
@@ -195,5 +272,6 @@ function stopLogging() {
   for (const existingProcess of Object.values(processes)) {
     existingProcess.kill('SIGINT');
   }
+  downDetector = undefined;
   toggleLoggingInProgress(false);
 }
