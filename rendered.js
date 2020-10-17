@@ -254,11 +254,7 @@ function startLogging(e) {
     document.getElementById('logging-format').value
   );
 
-  const ips = serverElements.map((serverInput) => {
-    console.log(serverInput);
-    const serverIp = serverInput.value;
-    return serverIp;
-  });
+  const ips = serverElements.map(serverInput => serverInput.value);
 
   downDetector = new LiveDownDetector(ips, onNetworkDown, onNetworkBackUp);
 
