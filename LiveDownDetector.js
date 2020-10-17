@@ -26,7 +26,6 @@ class LiveDownDetector {
     this._currentEvent = null;
 
     this._records = [];
-    console.log(this);
   }
 
   get isNetworkDown() {
@@ -86,8 +85,9 @@ class LiveDownDetector {
         // still ongoing
         return;
       }
-      this._currentEvent = this._lastIpState[ips[0]].timestamp;
+      this._currentEvent = timestamp;
       this.onDown(this._currentEvent);
+      return;
     }
     // not allDown
     if (this.isNetworkDown) { // network WAS down
@@ -97,7 +97,6 @@ class LiveDownDetector {
       this.onBackUp(this.lastEvent);
       return;
     }
-    console.log('None down');
     // not allDown, network wasn't down before. All is well and working
     return;
   }
