@@ -109,10 +109,29 @@ function renderLastDowntime(event = {}) {
   const key = `last-downtime-display`;
   const secondsDiff = Math.floor(event.duration / 1000);
   document.getElementById(key).textContent = `
-    ${event.start.toLocaleTimeString()} - ${event.start.toLocaleTimeString()}
+    ${event.start.toLocaleTimeString()} - ${event.end.toLocaleTimeString()}
 
     ${secondsDiff} second${secondsDiff === 1 ? 's' : ''}
   `;
+}
+
+function renderDowntimeTable() {
+  const downtimeTable = document.getElementById('downtime-table');
+  const tBody = downtimeTable.children[1];
+
+  const buildRow = (event, index) => {
+    const secondsDiff = Math.floor(event.duration / 1000);
+    return `<tr>
+      <td>${index + 1}</td>
+      <td>${secondsDiff}</td>
+      <td>${event.start.toLocaleTimeString()}</td>
+      <td>${event.end.toLocaleTimeString()}</td>
+      <td>${event.start.toLocaleDateString()}</td>
+    </tr>`;
+  };
+
+  const tBodyHtml = downDetector.recordedEvents.map(buildRow);
+  tBody.innerHTML = tBodyHtml.join('\n');
 }
 
 /**
@@ -204,6 +223,7 @@ function onNetworkBackUp(recordedEvent = {}) {
   const opts = getDowntimeAlertingOptions();
   alarmAudio.pause();
   renderLastDowntime(recordedEvent);
+  renderDowntimeTable();
   if (opts.notifications) {
     new Notification('Network Up', {
       body: `Network is back up as of ${recordedEvent.end.toLocaleTimeString()}`
