@@ -45,7 +45,7 @@
           </section>
         </fieldset>
         <fieldset>
-          <legend>Options</legend>
+          <legend>Ping Options</legend>
           <section class="form-group">
             <label for="logging-interval">Check Interval (seconds)</label>
             <input type="number" id="logging-interval" name="logging-interval" value="3" required/>
@@ -56,6 +56,20 @@
               <option value="txt">PlainText</option>
               <option value="json">JSON</option>
             </select>
+          </section>
+        </fieldset>
+        <fieldset>
+          <legend>Downtime Alerting</legend>
+          <section class="form-group">
+            <label for="notifications" class="paper-check">
+              <input type="checkbox" name="notifications" id="notifications" checked> <span>Notification Banners</span>
+            </label>
+            <label for="alarm" class="paper-check">
+              <input type="checkbox" name="alarm" id="alarm" checked> <span>Alarm</span>
+            </label>
+            <span >
+              <input class="btn-small btn-secondary-outline" type="button" name="alarm-test" onclick="alarmTest(this)" title="Test Alarm" value="Test Alarm" />
+            </span>
           </section>
         </fieldset>
         <button class="btn-block btn-primary-outline" type="submit">
@@ -69,6 +83,24 @@
         <pre id="server-2-tail">Waiting for initial check...</pre>
         <h4>Server 3</h4>
         <pre id="server-3-tail">Waiting for initial check...</pre>
+        <br />
+        <h4>Last Downtime</h4>
+        <pre id="last-downtime-display">No downtimes recorded</pre>
+        <br />
+        <h4>Recorded Downtimes</h4>
+        <table id="downtime-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Duration</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
         <br />
         <button class="btn-block btn-danger-outline" type="button" onclick="stopLogging()">
           Stop Logging

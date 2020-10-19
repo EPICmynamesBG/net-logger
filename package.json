@@ -1,6 +1,6 @@
 {
   "name": "net-logger",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Network ping/uptime logger",
   "main": "main.js",
   "dependencies": {
@@ -10,7 +10,8 @@
   "devDependencies": {
     "electron": "^9.1.2",
     "electron-installer-windows": "^3.0.0",
-    "electron-packager": "^15.0.0"
+    "electron-packager": "^15.0.0",
+    "mocha": "^8.2.0"
   },
   "scripts": {
     "start": "electron .",
@@ -18,7 +19,7 @@
     "build:win": "electron-packager . --platform=win32 --arch=x64 --out=\"./dist\" --prune --overwrite --icon=icons/icon --ignore=./icons --asar",
     "setup": "electron-installer-windows --src dist/net-logger-win32-x64/ --dest dist/installers/",
     "develop": "NODE_ENV=\"development\" electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/"
   },
   "engines": {
     "node": ">=12.8.3",
